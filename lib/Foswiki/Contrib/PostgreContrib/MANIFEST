@@ -1,0 +1,8 @@
+data/System/PostgreContrib.txt 0644
+lib/Foswiki/Configure/Checkers/Store/Postgre/Implementation.pm 0444
+lib/Foswiki/Contrib/PostgreContrib.pm 0444
+lib/Foswiki/Contrib/PostgreContrib/Config.spec 0444
+lib/Foswiki/Contrib/PostgreContrib/DEPENDENCIES 0444
+lib/Foswiki/Contrib/PostgreContrib/Connection.pm 0444
+lib/Foswiki/Contrib/PostgreContrib/ConnectionCache.pm 0444
+lib/Foswiki/Store/Postgre.pm 0444
