@@ -25,15 +25,16 @@ sub new {
 }
 
 sub getConnection {
-  my ($this, $callerID) = @_;
+  my ($this, $db, $callerID) = @_;
 
-  my $c = $this->{connections}->{$callerID};
+  $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_data' unless $db;
+  my $c = $this->{connections}->{$db}->{$callerID};
   return $c if $c && $c->{connected} && !$c->{finished};
 
-  my $dbh = $this->createDatebaseHandle;
-  die "Unable to create Postgre connection: " . $dbh->errstr if $dbh->err;
-  my $c = Foswiki::Contrib::PostgreContrib::Connection->new($dbh);
-  $this->{connections}->{$callerID} = $c;
+  my $dbh = $this->createDatebaseHandle($db);
+  die "Unable to create Postgre connection to database $db: " . $dbh->errstr if $dbh->err;
+  $c = Foswiki::Contrib::PostgreContrib::Connection->new($dbh);
+  $this->{connections}->{$db}->{$callerID} = $c;
 
   return $c;
 }
@@ -42,9 +43,11 @@ sub finish {
   my $this = shift;
   return if $this->{finished};
 
-  while (my ($callerID, $connection) = each %{$this->{connections}}) {
-    $connection->finish;
-    delete $this->{connections}->{$callerID};
+  foreach my $db (keys %{$this->{connections}}) {
+    while (my ($callerID, $connection) = each %{$this->{connections}->{$db}}) {
+      $connection->finish;
+      delete $this->{connections}->{$callerID};
+    }
   }
 
   $this->{connections} = undef;
@@ -52,11 +55,10 @@ sub finish {
 }
 
 sub createDatebaseHandle {
-  my $this = shift;
+  my ($this, $db) = @_;
 
   my $host = $Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} || '';
   my $port = $Foswiki::cfg{Extensions}{PostgreContrib}{Port} || 5432;
-  my $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki';
 
   DBI->connect(
     "dbi:Pg:dbname=$db;host=$host;port=$port",
