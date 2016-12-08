@@ -60,8 +60,12 @@ sub createDatebaseHandle {
   my $host = $Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} || '';
   my $port = $Foswiki::cfg{Extensions}{PostgreContrib}{Port} || 5432;
 
+  my $addr = "dbi:Pg:dbname=$db";
+  $addr .= ";host=$host" if $host;
+  $addr .= ";port=$port" if $port;
+
   DBI->connect(
-    "dbi:Pg:dbname=$db;host=$host;port=$port",
+    $addr,
     $Foswiki::cfg{Extensions}{PostgreContrib}{Username} || '',
     $Foswiki::cfg{Extensions}{PostgreContrib}{Password} || '',
     $this->{pgopts}

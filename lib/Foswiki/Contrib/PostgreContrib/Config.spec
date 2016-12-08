@@ -13,7 +13,7 @@
 $Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} = '';
 
 # **NUMBER EXPERT**
-$Foswiki::cfg{Extensions}{PostgreContrib}{Port} = 5432;
+$Foswiki::cfg{Extensions}{PostgreContrib}{Port} = '';
 
 # **STRING**
 $Foswiki::cfg{Extensions}{PostgreContrib}{Username} = '';
