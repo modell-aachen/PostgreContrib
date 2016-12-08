@@ -14,13 +14,14 @@ use Foswiki::Func;
 our $cache = undef;
 
 sub getConnection {
+  my $db = shift;
   my $caller = caller(0) || 'common';
 
   unless ($cache) {
     $cache = new Foswiki::Contrib::PostgreContrib::ConnectionCache();
   }
 
-  return $cache->getConnection($caller);
+  return $cache->getConnection($db, $caller);
 }
 
 sub finish {
