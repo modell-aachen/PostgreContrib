@@ -58,7 +58,10 @@ sub createDatebaseHandle {
   my ($this, $db) = @_;
 
   my $host = $Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} || '';
-  my $port = $Foswiki::cfg{Extensions}{PostgreContrib}{Port} || 5432;
+  my $port = $Foswiki::cfg{Extensions}{PostgreContrib}{Port} || '';
+  unless ($port) {
+    $port = 5432 if $host;
+  }
 
   my $addr = "dbi:Pg:dbname=$db";
   $addr .= ";host=$host" if $host;
