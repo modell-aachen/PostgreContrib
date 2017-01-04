@@ -1,0 +1,4 @@
+# Dependencies for PostgreContrib
+DBD::Pg, >=0, cpan, Required.
+DBI, >=0, cpan, Required.
+
