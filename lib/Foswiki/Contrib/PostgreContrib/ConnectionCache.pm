@@ -27,7 +27,7 @@ sub new {
 sub getConnection {
   my ($this, $db, $callerID) = @_;
 
-  $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_data' unless $db;
+  $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_store' unless $db;
   my $c = $this->{connections}->{$db}->{$callerID};
   return $c if $c && $c->{connected} && !$c->{finished};
 

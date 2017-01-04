@@ -22,4 +22,4 @@ $Foswiki::cfg{Extensions}{PostgreContrib}{Username} = '';
 $Foswiki::cfg{Extensions}{PostgreContrib}{Password} = '';
 
 # **STRING**
-$Foswiki::cfg{Extensions}{PostgreContrib}{Database} = 'foswiki_data';
+$Foswiki::cfg{Extensions}{PostgreContrib}{Database} = 'foswiki_store';
