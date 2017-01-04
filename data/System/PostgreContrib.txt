@@ -1,2 +1,95 @@
+%META:TOPICPARENT{name="Contribs"}%
+---+!! !PostgreContrib
+<!--
+One line description, required for extensions repository catalog.
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+%SHORTDESCRIPTION%
+
+In addition to a planned store implementation =PostgreContrib= provides a simple
+connection cache using Perl DBI.
+
+At the moment this is a just "companion contrib" for UnifiedAuthContrib.
+
+%TOC%
+
+---++ Prerequisites
+
+=PostgreContrib= relies on the well known Postgre SQL server which does *not*
+ship together with this contrib. Thus you have to install it with all its
+dependencies by yourself.
+
+For installation instructions other than Debian based distributions, refer to
+the user or administration manual of your Linux distribution.
+
+---+++ Debian Installation
+
+First you have to install the Postgre SQL server and client applications as well
+as Perl DBI and its Postgre driver.
+<verbatim>
+aptitude update
+aptitude install postgresql postgresql-client libdbi-perl libdbd-pg-perl
+</verbatim>
+
+A system user called =postgres= will be created by Debian's =tasksel= script.
+%BR%Switch to that user and create a new database user with the same name as
+the web server user. For Debian based distributions this should be =www-data=.
+%BR%Afterwards create two databases: =foswiki_store= and =foswiki_users=.%BR%
+
+=foswiki_store= is currently unused but is planned to be used by a future store
+implementation. =foswiki_users= holds all user information collected by
+UnifiedAuthContrib.
+<verbatim>
+sudo -u postgres createuser www-data
+sudo -u postgres createdb foswiki_store
+sudo -u postgres createdb foswiki_users
+</verbatim>
+
+Ensure access to databases is granted to local users. To do so check
+=/etc/postgresql/9.X/main/pg_hba.conf= for the following line
+<verbatim>
+local all all peer
+</verbatim>
+
+If it's not present you may add it as shown above or if you rather want to grant
+access only to the web server user:
+<verbatim>
+local foswiki_store www-data trust
+local foswiki_users www-data trust
+</verbatim>
+
+Finally reload the database server and enable its service during boot
+<verbatim>
+systemctl enable postgresql
+systemctl restart postgresql
+</verbatim>
+
+---++ Installation Instructions
+
+%$INSTALL_INSTRUCTIONS%
+
+---++ Using the Connection Pool
+A database connection can be requested via static method
+=PostgreContrib::getConnection=. This method takes as optional argument the
+name of the database you'd like to connect to. It defaults to =foswiki_store=.
+<verbatim>
+...
+use Foswiki::Contrib::PostgreContrib;
+...
+my $connection = Foswiki::Contrib::PostgreContrib::getConnection('foswiki_users');
+my $db = $connection->{db};
+...
+$connection->finish();
+</verbatim>
 
 
+---++ Contrib Info
+
+| Author(s): | Foswiki:Main.SvenMeyer, Foswiki:Main.StephanOsthold |
+| Copyright: | Copyright (C) 2016 Modell Aachen !GmbH |
+| License: | [[http://www.gnu.org/licenses/gpl.html][GPL (Gnu General Public License)]] |
+| Version: | %$VERSION% |
+| Release: | %$RELEASE% |
+| Dependencies: | %$DEPENDENCIES% |
+| Contrib Home: | http://www.modell-aachen.de |
+| Support: | http://www.modell-aachen.de |
