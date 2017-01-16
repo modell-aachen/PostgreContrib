@@ -9,16 +9,20 @@
 
 # ---+++ Connection
 
-# **STRING**
+# **STRING EXPERT**
+# Configure host for remote DB; usually you will want to leave this empty for local connections.
 $Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} = '';
 
-# **NUMBER EXPERT**
+# **STRING EXPERT**
+# Port where the DB resides; leave empty for local connections (no Hostname configured).
 $Foswiki::cfg{Extensions}{PostgreContrib}{Port} = '';
 
-# **STRING**
+# **STRING EXPERT**
+# Username for authentication; leave empty for local connections (no Hostname configures).
 $Foswiki::cfg{Extensions}{PostgreContrib}{Username} = '';
 
-# **PASSWORD**
+# **PASSWORD EXPERT**
+# Password for authentication; leave empty for local connections (no Hostname configures).
 $Foswiki::cfg{Extensions}{PostgreContrib}{Password} = '';
 
 # **STRING**
