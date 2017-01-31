@@ -27,3 +27,7 @@ $Foswiki::cfg{Extensions}{PostgreContrib}{Password} = '';
 
 # **STRING**
 $Foswiki::cfg{Extensions}{PostgreContrib}{Database} = 'foswiki_store';
+
+# **BOOLEAN EXPERT**
+# Force DBD::Pg to return all data with an utf-8 flag.
+$Foswiki::cfg{Extensions}{PostgreContrib}{EnableUTF8} = 0;

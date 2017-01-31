@@ -33,6 +33,9 @@ sub getConnection {
 
   my $dbh = $this->createDatebaseHandle($db);
   die "Unable to create Postgre connection to database $db: " . $dbh->errstr if $dbh->err;
+  if($Foswiki::cfg{Extensions}{PostgreContrib}{EnableUTF8}){
+      $dbh->{pg_enable_utf8} = 1;
+  }
   $c = Foswiki::Contrib::PostgreContrib::Connection->new($dbh);
   $this->{connections}->{$db}->{$callerID} = $c;
 
