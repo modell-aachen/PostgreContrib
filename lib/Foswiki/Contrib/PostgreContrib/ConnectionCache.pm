@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use DBI;
-use MIME::Base64;
+use utf8;
 use Foswiki::Contrib::PostgreContrib::Connection;
 
 sub new {
@@ -31,8 +31,8 @@ sub getConnection {
   my $useVHC = $Foswiki::cfg{Extensions}{PostgreContrib}{UseVHC} || 0;
   my $schema = 'public';
   if ($useVHC) {
-    $schema = MIME::Base64::encode($Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT);
-    $schema =~ s/\W//g;
+    $schema = $Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT;
+    $schema =~ s/([^A-Za-z0-9_])/ord $1/ge;
   }
 
   $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_store' unless $db;
