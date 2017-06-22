@@ -31,7 +31,7 @@ sub getConnection {
   my $useVHC = $Foswiki::cfg{Extensions}{PostgreContrib}{UseVHC} || 0;
   my $schema = 'public';
   if ($useVHC) {
-    $schema = $Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT;
+    $schema = "s_".$Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT;
     $schema =~ s/([^A-Za-z0-9_])/ord $1/ge;
   }
 
