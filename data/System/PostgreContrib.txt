@@ -64,9 +64,6 @@ systemctl enable postgresql
 systemctl restart postgresql
 </verbatim>
 
----++ Non-local connections
-Usually Foswiki will use a local socket connection for the DB. However you can configure a hostname/username/password for (remote) tcp connections. These are _expert_ options in configure.
-
 ---++ Installation Instructions
 
 %$INSTALL_INSTRUCTIONS%

@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use DBI;
+use utf8;
 use Foswiki::Contrib::PostgreContrib::Connection;
 
 sub new {
@@ -27,8 +28,15 @@ sub new {
 sub getConnection {
   my ($this, $db, $callerID) = @_;
 
+  my $useVHC = $Foswiki::cfg{Extensions}{PostgreContrib}{UseVHC} || 0;
+  my $schema = 'public';
+  if ($useVHC) {
+    $schema = "s_".$Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT;
+    $schema =~ s/([^A-Za-z0-9_])/ord $1/ge;
+  }
+
   $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_store' unless $db;
-  my $c = $this->{connections}->{$db}->{$callerID};
+  my $c = $this->{connections}->{$schema}->{$db}->{$callerID};
   return $c if $c && $c->{connected} && !$c->{finished};
 
   my $dbh = $this->createDatebaseHandle($db);
@@ -36,8 +44,17 @@ sub getConnection {
   if($Foswiki::cfg{Extensions}{PostgreContrib}{EnableUTF8}){
       $dbh->{pg_enable_utf8} = 1;
   }
+
+  # XXX
+  # Possibly unsecure but the DBI driver won't let us bind to an identifier.
+  if ($useVHC) {
+    my $rows = $dbh->selectall_arrayref("SELECT * FROM information_schema.schemata WHERE schema_name=?", {Slice => {}}, $schema);
+    $dbh->do("CREATE SCHEMA IF NOT EXISTS $schema") unless scalar(@$rows);
+  }
+
+  $dbh->do("SET search_path TO $schema");
   $c = Foswiki::Contrib::PostgreContrib::Connection->new($dbh);
-  $this->{connections}->{$db}->{$callerID} = $c;
+  $this->{connections}->{$schema}->{$db}->{$callerID} = $c;
 
   return $c;
 }

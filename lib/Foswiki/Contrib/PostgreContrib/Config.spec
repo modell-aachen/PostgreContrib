@@ -8,26 +8,21 @@
 # ---++ PostgreContrib
 
 # ---+++ Connection
-
-# **STRING EXPERT**
-# Configure host for remote DB; usually you will want to leave this empty for local connections.
-$Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} = '';
-
-# **STRING EXPERT**
-# Port where the DB resides; leave empty for local connections (no Hostname configured).
-$Foswiki::cfg{Extensions}{PostgreContrib}{Port} = '';
-
-# **STRING EXPERT**
-# Username for authentication; leave empty for local connections (no Hostname configures).
-$Foswiki::cfg{Extensions}{PostgreContrib}{Username} = '';
-
-# **PASSWORD EXPERT**
-# Password for authentication; leave empty for local connections (no Hostname configures).
-$Foswiki::cfg{Extensions}{PostgreContrib}{Password} = '';
+# **BOOLEAN**
+# Enable support for VirtualHostingContrib.
+$Foswiki::cfg{Extensions}{PostgreContrib}{UseVHC} = 0;
 
 # **STRING**
-$Foswiki::cfg{Extensions}{PostgreContrib}{Database} = 'foswiki_store';
+$Foswiki::cfg{Extensions}{PostgreContrib}{Hostname} = '';
 
-# **BOOLEAN EXPERT**
-# Force DBD::Pg to return all data with an utf-8 flag.
-$Foswiki::cfg{Extensions}{PostgreContrib}{EnableUTF8} = 0;
+# **NUMBER EXPERT**
+$Foswiki::cfg{Extensions}{PostgreContrib}{Port} = '';
+
+# **STRING**
+$Foswiki::cfg{Extensions}{PostgreContrib}{Username} = '';
+
+# **PASSWORD**
+$Foswiki::cfg{Extensions}{PostgreContrib}{Password} = '';
+
+# **STRING EXPERT**
+$Foswiki::cfg{Extensions}{PostgreContrib}{Database} = 'foswiki_store';
