@@ -24,6 +24,12 @@ sub new {
   bless $this, $class;
   return $this;
 }
+sub getSchemaName{
+  my ($this, $hostname) = @_;
+  my $schema = "s_".$hostname;
+  $schema =~ s/([^A-Za-z0-9_])/ord $1/ge;
+  return $schema;
+}
 
 sub getConnection {
   my ($this, $db, $callerID) = @_;
@@ -31,10 +37,8 @@ sub getConnection {
   my $useVHC = $Foswiki::cfg{Extensions}{PostgreContrib}{UseVHC} || 0;
   my $schema = 'public';
   if ($useVHC) {
-    $schema = "s_".$Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT;
-    $schema =~ s/([^A-Za-z0-9_])/ord $1/ge;
+    $schema = $this->getSchemaName($Foswiki::Contrib::VirtualHostingContrib::VirtualHost::CURRENT);
   }
-
   $db = $Foswiki::cfg{Extensions}{PostgreContrib}{Database} || 'foswiki_store' unless $db;
   my $c = $this->{connections}->{$schema}->{$db}->{$callerID};
   return $c if $c && $c->{connected} && !$c->{finished};
