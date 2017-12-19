@@ -1,10 +1,4 @@
 # ---+ Extensions
-# **ENHANCE {Store}{Implementation}**
-# <dl><dt>Postgre</dt>
-# <dd><strong>Not implemented yet!</strong></dd>
-# </dl>
-
-# ---+ Extensions
 # ---++ PostgreContrib
 
 # ---+++ Connection
