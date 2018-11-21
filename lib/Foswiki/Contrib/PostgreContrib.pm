@@ -14,14 +14,28 @@ use Foswiki::Func;
 our $cache = undef;
 
 sub getConnection {
-  my $db = shift;
-  my $caller = caller(0) || 'common';
+    my ($db, $createDatabase) = @_;
+    my $caller = caller(0) || 'common';
 
-  unless ($cache) {
-    $cache = new Foswiki::Contrib::PostgreContrib::ConnectionCache();
-  }
+    unless ($cache) {
+        $cache = new Foswiki::Contrib::PostgreContrib::ConnectionCache();
+    }
 
-  return $cache->getConnection($db, $caller);
+    my $connection;
+    eval {
+        $connection = $cache->getConnection($db, $caller);
+    } or do {
+        if( $createDatabase ) {
+            $connection = $cache->getConnection('foswiki_store', $caller);
+            $connection->{db}->do("CREATE DATABASE $db WITH ENCODING 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0");
+            $connection = $cache->getConnection($db, $caller);
+
+        }else{
+            die $@;
+        }
+    };
+
+    return $connection;
 }
 
 sub finish {
