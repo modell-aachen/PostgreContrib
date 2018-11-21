@@ -29,7 +29,6 @@ sub getConnection {
             $connection = $cache->getConnection('foswiki_store', $caller);
             $connection->{db}->do("CREATE DATABASE $db WITH ENCODING 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0");
             $connection = $cache->getConnection($db, $caller);
-
         }else{
             die $@;
         }
