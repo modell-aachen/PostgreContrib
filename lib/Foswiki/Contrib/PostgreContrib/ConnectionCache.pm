@@ -45,9 +45,7 @@ sub getConnection {
 
   my $dbh = $this->createDatebaseHandle($db);
   die "Unable to create Postgre connection to database $db: " . $dbh->errstr if $dbh->err;
-  if($Foswiki::cfg{Extensions}{PostgreContrib}{EnableUTF8}){
-      $dbh->{pg_enable_utf8} = 1;
-  }
+  $dbh->{pg_enable_utf8} = 1;
 
   # XXX
   # Possibly unsecure but the DBI driver won't let us bind to an identifier.
